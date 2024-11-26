@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Add Food Item{% endblock %}
+
+{% block content %}
+<h2 class="menu-title">Add New Food Item</h2>
+
+<form method="POST" action="/add_food">
+    <label for="name">Food Name:</label>
+    <input type="text" id="name" name="name" class="form-control" required>
+
+    <label for="category">Category:</label>
+    <select id="category" name="category" class="form-control" required>
+        {% for category in categories %}
+        <option value="{{ category }}">{{ category }}</option>
+        {% endfor %}
+    </select>
+
+    <button type="submit" class="btn btn-primary mt-3">Next</button>
+</form>
+
+<button class="btn btn-menu btn-back" onclick="location.href='/food'">Go Back</button>
+{% endblock %}

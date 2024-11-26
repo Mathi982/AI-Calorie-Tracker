@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}AI-Powered Weekly Meal Plan{% endblock %}
+
+{% block content %}
+<h2 class="menu-title">AI-Powered Weekly Meal Plan</h2>
+
+{% if ai_meal_plan %}
+    <table class="table table-bordered table-hover table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>Day</th>
+                <th>Meals</th>
+                <th>Total Calories</th>
+                <th>Total Protein (g)</th>
+                <th>Total Carbs (g)</th>
+                <th>Total Fats (g)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for day, data in ai_meal_plan.items() %}
+            <tr>
+                <td>{{ day }}</td>
+                <td>
+                    <ul>
+                        {% for meal in data['meals'] %}
+                        <li>{{ meal.name }}: {{ meal.calories }} kcal, {{ meal.protein }}g protein, {{ meal.carbohydrates }}g carbs, {{ meal.fats }}g fats</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+                <td>{{ data['daily_totals'].calories }}</td>
+                <td>{{ data['daily_totals'].protein }}</td>
+                <td>{{ data['daily_totals'].carbohydrates }}</td>
+                <td>{{ data['daily_totals'].fats }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No AI meal plans found. Please generate one!</p>
+{% endif %}
+
+<!-- Back Button -->
+<a href="/meal_planning" class="btn btn-secondary mt-3">Go Back</a>
+{% endblock %}

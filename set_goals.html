@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block title %}Set Your Fitness Goals{% endblock %}
+
+{% block content %}
+    <h2 class="menu-title">Set Your Fitness Goals</h2>
+
+    <div class="row">
+        <!-- Left side: Current BMI Info if exists -->
+        {% if current_bmi_info %}
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">Current BMI Information</div>
+                <div class="card-body">
+                    <p><strong>Height:</strong> {{ current_bmi_info['Height'] }} cm</p>
+                    <p><strong>Weight:</strong> {{ current_bmi_info['Weight'] }} kg</p>
+                    <p><strong>Age:</strong> {{ current_bmi_info['Age'] }}</p>
+                    <p><strong>Gender:</strong> {{ current_bmi_info['Gender'] }}</p>
+                    <p><strong>BMI:</strong> {{ current_bmi_info['BMI'] | round(2) }}</p>
+                    <p><strong>BMR:</strong> {{ current_bmi_info['BMR'] | round(2) }} kcal/day</p>
+                    <p><strong>TDEE:</strong> {{ current_bmi_info['TDEE'] | round(2) }} kcal/day</p>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Right side: Goal Setting Form -->
+        <div class="col-md-8">
+            <form method="POST" action="/set_goals">
+                <!-- Starting Weight -->
+                <div class="form-group">
+                    <label for="startingWeight">Starting Weight (kg):</label>
+                    <input type="number" step="0.1" id="startingWeight" name="starting_weight" class="form-control"
+                           value="{{ current_bmi_info['Weight'] }}" required>
+                </div>
+
+                <!-- Target Weight -->
+                <div class="form-group">
+                    <label for="targetWeight">Target Weight (kg):</label>
+                    <input type="number" step="0.1" id="targetWeight" name="target_weight" class="form-control" required>
+                </div>
+
+                <!-- Protein Goal -->
+                <div class="form-group">
+                    <label for="proteinGoal">Daily Protein Goal (g):</label>
+                    <input type="number" id="proteinGoal" name="protein_goal" class="form-control" placeholder="e.g., 150">
+                </div>
+
+                <!-- Carbohydrates Goal -->
+                <div class="form-group">
+                    <label for="carbsGoal">Daily Carbohydrates Goal (g):</label>
+                    <input type="number" id="carbsGoal" name="carbs_goal" class="form-control" placeholder="e.g., 250">
+                </div>
+
+                <!-- Fats Goal -->
+                <div class="form-group">
+                    <label for="fatsGoal">Daily Fats Goal (g):</label>
+                    <input type="number" id="fatsGoal" name="fats_goal" class="form-control" placeholder="e.g., 70">
+                </div>
+
+                <!-- Target Date -->
+                <div class="form-group">
+                    <label for="targetDate">Target Date (DD-MM-YYYY):</label>
+                    <input type="text" id="targetDate" name="target_date" class="form-control" placeholder="e.g., 15-10-2024" required>
+                </div>
+
+                <!-- Warning message if there are existing goals -->
+                {% if existing_goals %}
+                    <div class="alert alert-warning">
+                        You already have existing goals. Setting new goals will overwrite the current visible goal. Do you want to proceed?
+                    </div>
+                {% endif %}
+
+                <!-- Submit Button -->
+                <div style="margin-bottom: 20px;">
+                    <button type="submit" class="btn btn-primary">Set Goals</button>
+                    <button class="btn btn-secondary" onclick="location.href='/view_goals'">
+                        <i class="fas fa-arrow-left"></i> View Goals
+                    </button>
+                </div>
+
+                <!-- Display weekly weight progression table -->
+                {% if weekly_weight_progression %}
+                    <h3>Weekly Target Weights:</h3>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Target Weight (kg)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for date, weight in weekly_weight_progression %}
+                                <tr>
+                                    <td>{{ date }}</td>
+                                    <td>{{ weight | round(1) }} kg</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
+
+                <!-- Display success or error message if needed -->
+                {% if success %}
+                <div class="alert alert-success mt-4">
+                    <strong>Success!</strong> Your goals have been set successfully.
+                </div>
+                {% elif error %}
+                <div class="alert alert-danger mt-4">
+                    <strong>Error:</strong> {{ error }}
+                </div>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+
+    <style>
+        .card-header {
+            background-color: rgba(1, 19, 71, 255);
+            color: white;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+{% endblock %}

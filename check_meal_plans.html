@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Check Meal Plans{% endblock %}
+
+{% block content %}
+    <h2 class="menu-title">Meal Plan Management</h2>
+
+    {% if has_meal_plans %}
+        <p>You already have saved meal plans. Would you like to overwrite them?</p>
+        <form method="POST">
+            <button name="overwrite" value="yes" class="btn btn-warning">Yes, Overwrite</button>
+            <button name="overwrite" value="no" class="btn btn-secondary">No, Keep Current Plans</button>
+        </form>
+    {% else %}
+        <p>No meal plans exist. You can generate new meal plans.</p>
+        <a href="{{ url_for('generate_meal_plan_form') }}" class="btn btn-primary">Generate New Meal Plan</a>
+    {% endif %}
+{% endblock %}

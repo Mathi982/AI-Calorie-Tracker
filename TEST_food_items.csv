@@ -1,0 +1,103 @@
+Category,Name,Weight,Calories,Protein,Carbohydrates,Fats,Price
+Main,aberdeen angus steak mince,500.0,655.0,85.0,6.0,13.0,3.99
+Main,aldi harissa salmon,220.0,433.4,26.0,39.0,19.0,3.89
+Main,aldi red thai salmon,220.0,435.6,22.0,67.0,24.0,3.89
+Snack,aldi sweet popcorn,110.0,547.8,7.0,34.0,16.0,0.99
+Drinks,Almond Milk Latte,303.0,90.0,6.0,14.0,0.0,4.5
+Snack,Apple Crumble,143.0,250.0,9.0,47.0,19.0,4.0
+Snack,Apple Slices with Peanut Butter,135.0,200.0,7.0,43.0,12.0,3.5
+Breakfast,Avocado and Egg Toast,168.0,350.0,19.0,38.0,15.0,6.99
+Main,Bacon Cheeseburger,331.0,950.0,19.0,67.0,23.0,10.99
+Main,Baked Beans,403.0,300.0,28.0,43.0,22.0,5.5
+Snack,Banana Bread,78.0,320.0,7.0,31.0,10.0,3.5
+Drinks,Banana Smoothie,353.0,200.0,7.0,9.0,3.0,4.25
+Main,basmati rice,250.0,337.5,26.0,66.0,22.0,0.45
+Main,BBQ Chicken Pizza,162.0,950.0,88.0,0.0,21.0,14.99
+Snack,BBQ Chicken Wings,289.0,500.0,94.0,9.0,28.0,7.5
+Main,BBQ Pulled Pork Sandwich,257.0,600.0,89.0,0.0,29.0,9.75
+Main,Beef Burrito,216.0,700.0,89.0,6.0,17.0,9.99
+Main,Beef Stew,195.0,550.0,89.0,8.0,24.0,9.99
+Main,Beet Salad,205.0,200.0,18.0,28.0,9.0,7.5
+Snack,Blueberry Muffin,146.0,300.0,6.0,49.0,10.0,2.99
+Main,Caesar Salad,203.0,450.0,10.0,19.0,12.0,8.5
+Drinks,Cappuccino,465.0,80.0,1.0,14.0,2.0,4.0
+Main,Carrot Ginger Soup,296.0,200.0,10.0,23.0,7.0,6.75
+Snack,Cheese and Crackers,147.0,300.0,7.0,31.0,13.0,4.25
+Main,Cheese Pizza,350.0,750.0,16.0,59.0,35.0,11.5
+Main,Chicken Alfredo,214.0,850.0,92.0,2.0,17.0,12.99
+Main,chicken breast fillets,600.0,636.0,93.0,7.0,25.0,3.99
+Main,Chicken Burrito,174.0,650.0,85.0,3.0,10.0,9.5
+Main,Chicken Caesar Salad,249.0,520.0,86.0,3.0,21.0,10.5
+Main,Chicken Caesar Wrap,210.0,600.0,94.0,0.0,13.0,8.99
+Main,Chicken Noodle Soup,278.0,350.0,94.0,2.0,20.0,6.5
+Snack,Chicken Tenders,261.0,400.0,93.0,1.0,22.0,6.5
+Snack,Chicken Wings,297.0,450.0,87.0,4.0,12.0,6.99
+Snack,Chocolate Croissant,91.0,350.0,9.0,33.0,11.0,3.99
+Drinks,Chocolate Milk,297.0,210.0,9.0,22.0,2.0,2.5
+Snack,Chocolate Mousse,89.0,300.0,9.0,32.0,15.0,4.5
+Snack,Chocolate Pudding,76.0,180.0,9.0,35.0,17.0,3.75
+Snack,Churros,124.0,400.0,6.0,40.0,17.0,4.5
+Main,Clam Chowder,256.0,500.0,29.0,54.0,24.0,8.5
+Snack,Coconut Macaroons,99.0,180.0,8.0,34.0,19.0,3.25
+Drinks,Coconut Water,462.0,60.0,0.0,8.0,2.0,2.99
+Main,diced beef,700.0,854.0,87.0,3.0,21.0,6.49
+Snack,easy peelers,600.0,282.0,7.0,23.0,15.0,0.89
+Main,Egg Salad,349.0,250.0,12.0,16.0,7.0,5.99
+Main,Eggplant Lasagna,344.0,600.0,18.0,34.0,22.0,11.99
+Main,Fish Tacos,426.0,600.0,20.0,38.0,24.0,9.5
+Snack,Fruit Salad,256.0,150.0,11.0,21.0,5.0,4.5
+Snack,Garlic Bread,111.0,250.0,9.0,30.0,18.0,3.5
+Main,Garlic Shrimp,498.0,400.0,23.0,58.0,16.0,10.99
+Drinks,Ginger Tea,317.0,5.0,6.0,1.0,3.0,2.75
+Breakfast,Granola with Greek Yogurt,239.0,350.0,11.0,40.0,15.0,5.75
+Breakfast,Greek Yogurt with Honey,175.0,200.0,16.0,52.0,15.0,3.75
+Drinks,Green Tea,381.0,0.0,7.0,28.0,0.0,2.5
+Snack,Grilled Asparagus,127.0,100.0,6.0,31.0,13.0,4.25
+Main,Grilled Cheese Sandwich,344.0,550.0,19.0,52.0,29.0,6.75
+Main,Grilled VegetablePanini,324.0,400.0,15.0,21.0,7.0,8.99
+Snack,halo top sea salt caramel,276.0,320.0,9.0,34.0,11.0,5.5
+Main,Honey Glazed Ham,426.0,500.0,29.0,64.0,17.0,12.5
+Drinks,Iced Tea,373.0,90.0,4.0,2.0,1.0,2.5
+Main,john west tuna,102.0,108.12,20.0,48.0,21.0,0.99
+Snack,Lemon Meringue Pie,86.0,350.0,5.0,40.0,12.0,4.99
+Drinks,Lemonade,362.0,120.0,6.0,28.0,2.0,3.5
+Main,Mac and Cheese,357.0,650.0,23.0,49.0,12.0,7.99
+Drinks,Mango Smoothie,407.0,180.0,2.0,19.0,1.0,4.75
+Snack,Mango Sorbet,94.0,160.0,6.0,23.0,18.0,4.0
+Snack,Mango Sticky Rice,60.0,450.0,6.0,33.0,18.0,5.99
+Main,Mashed Potatoes,419.0,250.0,15.0,52.0,24.0,4.5
+Snack,Mixed Nuts,82.0,180.0,6.0,27.0,18.0,2.99
+Drinks,Orange Juice,289.0,110.0,5.0,19.0,4.0,3.0
+Breakfast,Pancakes with Blueberries,132.0,520.0,17.0,44.0,14.0,7.99
+Breakfast,Pancakes with Maple Syrup,294.0,620.0,19.0,56.0,10.0,7.99
+Snack,Peach Cobbler,61.0,450.0,8.0,27.0,11.0,5.0
+Main,Peanut Butter and Jelly Sandwich,226.0,350.0,18.0,69.0,21.0,4.5
+Drinks,Pineapple Smoothie,469.0,220.0,9.0,3.0,0.0,4.5
+Main,pink salmon,213.0,293.94,17.0,35.0,15.0,1.39
+Drinks,Raspberry Lemonade,223.0,100.0,0.0,24.0,2.0,3.5
+Snack,Rice Krispies Treat,93.0,300.0,6.0,29.0,10.0,2.0
+Main,Roast Beef Sandwich,228.0,550.0,86.0,8.0,24.0,9.0
+Main,Salmon Sushi,459.0,300.0,24.0,65.0,23.0,12.0
+Main,Shrimp Tempura,486.0,400.0,21.0,37.0,20.0,9.5
+Breakfast,Smoothie Bowl,282.0,430.0,10.0,55.0,17.0,8.25
+Main,Spaghetti Bolognese,482.0,850.0,26.0,52.0,10.0,12.99
+Breakfast,Spinach and Cheese Omelette,281.0,400.0,11.0,51.0,19.0,6.75
+Main,Spinach Salad,334.0,300.0,15.0,23.0,7.0,7.25
+Drinks,Spinach Smoothie,251.0,180.0,1.0,20.0,2.0,4.5
+Breakfast,Strawberry Yogurt,262.0,150.0,12.0,46.0,15.0,3.0
+Main,Stuffed Bell Peppers,252.0,350.0,22.0,35.0,20.0,7.5
+Breakfast,surreal cinnamon,40.0,152.8,11.0,48.0,10.0,4.95
+Breakfast,surreal frosted,48.0,184.32,14.0,50.0,15.0,4.55
+Main,Taco Salad,216.0,450.0,19.0,16.0,11.0,8.25
+Main,Tofu Stir-Fry,235.0,350.0,12.0,23.0,9.0,7.5
+Snack,Tomato Bruschetta,73.0,150.0,8.0,35.0,15.0,4.0
+Snack,Tuna Sushi Roll,78.0,350.0,8.0,32.0,16.0,5.99
+Main,Turkey Meatloaf,382.0,700.0,21.0,55.0,16.0,10.99
+Drink,ufit caramel 50g,500.0,325.0,50.0,17.0,5.0,2.99
+Snack,Vanilla Ice Cream,96.0,250.0,5.0,44.0,13.0,3.99
+Main,Vegetable Stir-Fry,226.0,400.0,12.0,19.0,12.0,7.99
+Main,Veggie Burger,261.0,450.0,19.0,58.0,32.0,8.99
+Breakfast,Veggie Omelette,237.0,250.0,16.0,39.0,13.0,6.0
+Database item,Spinach Egg Noodles (Cooked),450.0,594.0,22.68,109.13,7.1,0.0
+main,Restaurant Latino Pupusas Del Cerdo (Pupusas Pork),200.0,463.99999999999994,23.02,46.04,20.86,0.0
+main,Tofu Yogurt,350.0,329.0,12.250000000000002,55.86000000000001,6.300000000000001,0.0

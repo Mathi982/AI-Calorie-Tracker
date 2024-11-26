@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}Browse Food Database{% endblock %}
+
+{% block content %}
+<h2>Browse Food Database</h2>
+
+<!-- Search form -->
+<form method="POST" action="/browse_food">
+    <label for="food_search">Search Food Item:</label>
+    <input type="text" id="food_search" name="food_search" class="form-control" placeholder="Enter food name" required>
+    <button type="submit" class="btn btn-primary mt-3">Search</button>
+</form>
+
+<hr>
+{% endblock %}
+
+{% block table_content %}
+<!-- Moved the table here (where the visualization area was before) -->
+{% if display_table %}
+<!-- Table for showing food items -->
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Calories (per 100g)</th>
+            <th>Protein (g)</th>
+            <th>Carbohydrates (g)</th>
+            <th>Fats (g)</th>
+            <th>Select</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in food_items %}
+        <tr>
+            <td>{{ item.name }}</td>
+            <td>{{ item.calories }}</td>
+            <td>{{ item.protein }}</td>
+            <td>{{ item.carbohydrates }}</td>
+            <td>{{ item.fats }}</td>
+            <td>
+                <!-- Button to select item and go to serving size page -->
+                <form action="/add_serving" method="GET" style="display:inline-block;">
+                    <input type="hidden" name="name" value="{{ item.name }}">
+                    <input type="hidden" name="calories" value="{{ item.calories }}">
+                    <input type="hidden" name="protein" value="{{ item.protein }}">
+                    <input type="hidden" name="carbohydrates" value="{{ item.carbohydrates }}">
+                    <input type="hidden" name="fats" value="{{ item.fats }}">
+                    <button type="submit" class="btn btn-primary">Select</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+{% endblock %}

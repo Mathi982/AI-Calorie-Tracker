@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Meal Planning{% endblock %}
+
+{% block content %}
+    <h2 class="menu-title">Meal Planning Options</h2>
+
+<!-- Group 1: Regular Meal Plans -->
+<h3>Regular Meal Plans</h3>
+<div class="button-group">
+    <button class="btn btn-menu" onclick="location.href='/view_meal_plans'">
+        View Current Meal Plans
+    </button>
+    <button class="btn btn-menu" onclick="location.href='/generate_meal_plan'">
+        Generate Meal Plans
+    </button>
+</div>
+
+<!-- Group 2: AI-Powered Meal Plans -->
+<h3>AI-Powered Meal Plans</h3>
+<div class="button-group">
+    <button class="btn btn-menu" onclick="location.href='/view_ai_meal_plan'">
+        View AI Powered Meal Plans
+    </button>
+    <button class="btn btn-menu" onclick="location.href='/generate_ai_meal_plan'">
+        Generate AI Powered Meal Plans
+    </button>
+</div>
+
+{% endblock %}

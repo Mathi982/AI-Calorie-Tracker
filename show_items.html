@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}Your Food Items{% endblock %}
+
+{% block content %}
+<h2 class="menu-title">Your Food Items</h2>
+
+<!-- Check if there are food items available -->
+{% if food_items %}
+    <!-- Modern styled table with Bootstrap classes -->
+    <table class="table table-bordered table-hover table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>Food Name</th>
+                <th>Category</th>
+                <th>Calories</th>
+                <th>Protein (g)</th>
+                <th>Carbohydrates (g)</th> <!-- Correctly labeled Carbohydrates -->
+                <th>Fats (g)</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Loop through the food items and populate the table -->
+            {% for item in food_items %}
+                <tr>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.category }}</td>
+                    <td>{{ item.calories }}</td>
+                    <td>{{ item.protein }}</td>
+                    <td>{{ item.carbohydrates }}</td> <!-- Ensure this is 'carbohydrates' in the data -->
+                    <td>{{ item.fats }}</td>
+                    <td>
+                        <form action="/edit_food_item" method="GET" style="display:inline-block;">
+                            <input type="hidden" name="name" value="{{ item.name }}">
+                            <button type="submit" class="btn btn-warning btn-sm">Edit</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="/delete_food_item" method="POST" style="display:inline-block;">
+                            <input type="hidden" name="name" value="{{ item.name }}">
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No items found.</p>
+{% endif %}
+
+<!-- Go back button -->
+<button class="btn btn-secondary btn-back mt-3" onclick="location.href='/food'">
+    <i class="fas fa-arrow-left"></i> Go Back
+</button>
+
+{% endblock %}
+
+
+
+

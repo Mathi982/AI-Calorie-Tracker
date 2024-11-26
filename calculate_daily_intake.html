@@ -1,0 +1,226 @@
+{% extends 'base.html' %}
+
+{% block title %}Calculate Daily Intake{% endblock %}
+
+{% block content %}
+    <h2>Calculate Your Daily Intake</h2>
+
+    <form method="POST" action="/calculate_daily_intake">
+    <!-- Scrollable table container -->
+    <div style="max-height: 400px; overflow-y: auto;">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Quantity</th>
+                    <th>Food Item</th>
+                    <th>Calories</th>
+                    <th>Protein</th>
+                    <th>Carbohydrates</th>
+                    <th>Fats</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for food in food_items %}
+                <tr class="food-row" data-calories="{{ food.Calories }}" data-protein="{{ food.Protein }}"
+                    data-carbs="{{ food.Carbohydrates }}" data-fats="{{ food.Fats }}" data-name="{{ food.Name }}">
+                    <td>
+                        <input type="number" name="food_items[]" value="0" min="0"
+                            class="form-control food-quantity" style="width: 80px;"
+                            data-name="{{ food.Name }}"
+                            data-calories="{{ food.Calories }}"
+                            data-protein="{{ food.Protein }}"
+                            data-carbs="{{ food.Carbohydrates }}"
+                            data-fats="{{ food.Fats }}">
+                    </td>
+                    <td>{{ food.Name }}</td>
+                    <td>{{ food.Calories }} calories</td>
+                    <td>{{ food.Protein }}g</td>
+                    <td>{{ food.Carbohydrates }}g</td>
+                    <td>{{ food.Fats }}g</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+        <!-- Selected items summary section -->
+        <h3>Your Selection:</h3>
+        <div id="selectedItems">
+            <p>No items selected yet.</p>
+        </div>
+
+        <!-- Macro totals summary -->
+        <ul>
+            <li>Total Calories: <span id="total-calories">0</span> kcal</li>
+            <li>Total Protein: <span id="total-protein">0</span> g</li>
+            <li>Total Carbohydrates: <span id="total-carbs">0</span> g</li>
+            <li>Total Fats: <span id="total-fats">0</span> g</li>
+        </ul>
+
+        <!-- Radial charts to show progress -->
+        <div id="visualization" style="display: flex; justify-content: space-around; margin: 20px 0;">
+            <div>
+                <canvas id="caloriesChart" width="120" height="120"></canvas>
+                <p>Total Calories</p>
+            </div>
+            <div>
+                <canvas id="proteinChart" width="120" height="120"></canvas>
+                <p>Total Protein</p>
+            </div>
+            <div>
+                <canvas id="carbsChart" width="120" height="120"></canvas>
+                <p>Total Carbs</p>
+            </div>
+            <div>
+                <canvas id="fatsChart" width="120" height="120"></canvas>
+                <p>Total Fats</p>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+    <button class="btn btn-secondary" onclick="location.href='/food_log'">
+        <i class="fas fa-arrow-left"></i> Go Back
+    </button>
+
+    <!-- Show success message if the log was updated -->
+    {% if meal_log_updated %}
+        <div class="alert alert-success mt-4">
+            <strong>Success!</strong> Food Log has been updated.
+        </div>
+    {% endif %}
+
+    <!-- Add Chart.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- JavaScript to update the selected items dynamically -->
+    <script>
+        // Define the goal values globally so they can be accessed by both the charts and update functions
+        const goalCalories = {{ goal_calories|default(2000) | int }};
+        const goalProtein = {{ goal_protein|default(150) | int }};
+        const goalCarbs = {{ goal_carbs|default(300) | int }};
+        const goalFats = {{ goal_fats|default(70) | int }};
+
+        let caloriesChart, proteinChart, carbsChart, fatsChart;
+
+        // Initialize the radial charts once the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCharts();  // Initialize charts after DOM content is loaded
+
+            // Add event listener to each food quantity input to update the charts when the input changes
+            document.querySelectorAll(".food-quantity").forEach(function (input) {
+                input.addEventListener("input", updateSelectedItems);
+            });
+        });
+
+        // Initialize the radial charts
+        function initializeCharts() {
+            const caloriesCanvas = document.getElementById('caloriesChart');
+            const proteinCanvas = document.getElementById('proteinChart');
+            const carbsCanvas = document.getElementById('carbsChart');
+            const fatsCanvas = document.getElementById('fatsChart');
+
+            if (caloriesCanvas) {
+                caloriesChart = createRadialChart(caloriesCanvas, 0, goalCalories, '#4CAF50');
+            }
+
+            if (proteinCanvas) {
+                proteinChart = createRadialChart(proteinCanvas, 0, goalProtein, '#FF5733');
+            }
+
+            if (carbsCanvas) {
+                carbsChart = createRadialChart(carbsCanvas, 0, goalCarbs, '#3498DB');
+            }
+
+            if (fatsCanvas) {
+                fatsChart = createRadialChart(fatsCanvas, 0, goalFats, '#F1C40F');
+            }
+        }
+
+        // Function to create a radial chart
+        function createRadialChart(canvas, initialValue, maxValue, color) {
+            return new Chart(canvas.getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: [initialValue, maxValue - initialValue],
+                        backgroundColor: [color, '#E0E0E0'],
+                        borderWidth: 1,
+                    }]
+                },
+                options: {
+                    circumference: 180,
+                    rotation: 270,
+                    cutout: '70%',
+                    plugins: {
+                        tooltip: { enabled: false },
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+
+        // Function to update the selected items and totals dynamically
+        function updateSelectedItems() {
+            let selectedItems = document.getElementById("selectedItems");
+            let quantities = document.querySelectorAll(".food-quantity");
+
+            let selected = [];
+            let totalCalories = 0, totalProtein = 0, totalCarbs = 0, totalFats = 0;
+
+            quantities.forEach(function (input) {
+                let quantity = parseInt(input.value, 10);
+                if (quantity > 0) {
+                    let name = input.getAttribute("data-name");
+                    let calories = parseFloat(input.getAttribute("data-calories")) * quantity;
+                    let protein = parseFloat(input.getAttribute("data-protein")) * quantity;
+                    let carbs = parseFloat(input.getAttribute("data-carbs")) * quantity;
+                    let fats = parseFloat(input.getAttribute("data-fats")) * quantity;
+
+                    selected.push(`${quantity}x ${name}`);
+
+                    // Accumulate totals
+                    totalCalories += calories;
+                    totalProtein += protein;
+                    totalCarbs += carbs;
+                    totalFats += fats;
+                }
+            });
+
+            if (selected.length > 0) {
+                selectedItems.innerHTML = "<ul><li>" + selected.join("</li><li>") + "</li></ul>";
+            } else {
+                selectedItems.innerHTML = "<p>No items selected yet.</p>";
+            }
+
+            // Update total macros
+            document.getElementById('total-calories').textContent = totalCalories.toFixed(2);
+            document.getElementById('total-protein').textContent = totalProtein.toFixed(2);
+            document.getElementById('total-carbs').textContent = totalCarbs.toFixed(2);
+            document.getElementById('total-fats').textContent = totalFats.toFixed(2);
+
+            // Update radial charts with new totals
+            if (caloriesChart) {
+                updateRadialChart(caloriesChart, totalCalories, goalCalories);
+            }
+            if (proteinChart) {
+                updateRadialChart(proteinChart, totalProtein, goalProtein);
+            }
+            if (carbsChart) {
+                updateRadialChart(carbsChart, totalCarbs, goalCarbs);
+            }
+            if (fatsChart) {
+                updateRadialChart(fatsChart, totalFats, goalFats);
+            }
+        }
+
+        // Function to update a radial chart with new values
+        function updateRadialChart(chart, value, maxValue) {
+            chart.data.datasets[0].data = [value, Math.max(0, maxValue - value)];
+            chart.update();
+        }
+    </script>
+
+{% endblock %}

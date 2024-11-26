@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Food & Meal Management{% endblock %}
+
+{% block content %}
+    <h2 class="menu-title">Food & Meal Management</h2>
+    <button class="btn btn-menu" onclick="location.href='/add_food'">
+        <i class="fas fa-plus"></i> Add Food Item
+    </button>
+    <button class="btn btn-menu" onclick="location.href='/browse_food'">
+        <i class="fas fa-database"></i> Browse Food Database
+    </button>
+    <button class="btn btn-menu" onclick="location.href='/show_items'">
+        <i class="fas fa-list"></i> Show Items
+    </button>
+    <button class="btn btn-menu" onclick="location.href='/meal_planning'">
+        <i class="fas fa-utensils"></i> Meal Planning
+    </button>
+    <button class="btn btn-menu" onclick="location.href='/food_log'">
+        <i class="fas fa-book"></i> Food Log
+    </button>
+{% endblock %}

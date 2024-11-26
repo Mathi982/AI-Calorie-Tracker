@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Food Item Added{% endblock %}
+
+{% block content %}
+    <h2 class="menu-title">Food Item Added</h2>
+    <p>{{ serving_size }} grams of {{ name }} has been added to the {{ category }} category.</p>
+    <ul>
+        <li>Calories: {{ calories }} kcal</li>
+        <li>Protein: {{ protein }} g</li>
+        <li>Carbohydrates: {{ carbs }} g</li>
+        <li>Fats: {{ fats }} g</li>
+    </ul>
+    <a href="/food" class="btn btn-primary">Go Back to Main Menu</a>
+{% endblock %}

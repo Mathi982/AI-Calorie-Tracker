@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% block title %}Log Your Weight{% endblock %}
+
+{% block content %}
+    <h2 class="menu-title">Log Your Weight</h2>
+
+    <div class="row">
+        <!-- Left: Weight History Table -->
+        <div class="col-md-7">
+            <h3>Weight History</h3>
+            <div class="table-container">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr class="table-header">
+                            <th>Date</th>
+                            <th>Weight (kg)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for entry in weight_history %}
+                        <tr>
+                            <td>{{ entry['Date'] }}</td>
+                            <td>{{ entry['Weight'] }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Right: Weight Logging Form -->
+        <div class="col-md-5">
+            <!-- Initial weight form -->
+            {% if not weight_confirmed %}
+            <form method="POST" action="/log_weight">
+                <div class="form-group">
+                    <label for="weightInput">Enter your current weight (kg):</label>
+                    <input type="number" step="0.1" id="weightInput" name="weight" class="form-control" value="{{ weight }}" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Log Weight</button>
+                <button class="btn btn-secondary" onclick="location.href='/weight_menu'">
+                    <i class="fas fa-arrow-left"></i> Go Back
+                </button>
+            </form>
+
+            <!-- Confirmation form after initial weight submission -->
+            {% elif weight_confirmed %}
+            <div class="confirmation">
+                <p>You entered <strong>{{ weight }}kg</strong>. Is this correct?</p>
+                <form method="POST" action="/confirm_weight">
+                    <input type="hidden" name="confirmed_weight" value="{{ weight }}">
+                    <button type="submit" name="confirm" value="yes" class="btn btn-success">Yes, log it</button>
+                    <button type="submit" name="confirm" value="no" class="btn btn-danger">No, go back</button>
+                </form>
+            </div>
+            {% endif %}
+
+            <!-- Display a success message if weight was logged -->
+            {% if success %}
+            <div class="alert alert-success mt-4">
+                <strong>Success!</strong> Your weight has been logged.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Custom Styles -->
+    <style>
+        .table-container {
+            max-height: 500px; /* Limit the table height */
+            overflow-y: auto; /* Allow vertical scrolling if needed */
+            overflow-x: auto; /* Allow horizontal scrolling */
+        }
+
+        /* Table Styling */
+        .table {
+            width: 100%; /* Make sure it fits the container */
+            text-align: left;
+        }
+
+        .table-header {
+            background-color: rgba(1, 19, 71, 1); /* Dark blue color */
+            color: white;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        tbody td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: rgba(1, 19, 71, 1);
+            border: none;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: rgba(1, 19, 71, 0.8); /* Slightly lighter on hover */
+        }
+    </style>
+{% endblock %}

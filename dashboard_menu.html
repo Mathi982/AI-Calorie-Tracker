@@ -1,0 +1,242 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+    <h2 class="menu-title">Dashboard</h2>
+
+    <!-- Weight Progress -->
+    <div>
+        <h3>Weight Progress</h3>
+        <canvas id="weightChart" width="400" height="200"></canvas>
+    </div>
+
+    <!-- Nutrient Log -->
+    <div>
+        <h3>Daily Nutrient Log</h3>
+        <canvas id="nutrientLogChart" width="400" height="200"></canvas>
+    </div>
+
+    <!-- Meal Plan Macronutrient Breakdown -->
+    <div>
+        <h3>Meal Plan Macronutrient Breakdown</h3>
+        <canvas id="mealPlanChart" width="400" height="200"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+   <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        console.log('DOM fully loaded and parsed');
+
+        // Ensure the data is passed from Flask properly
+        const weightHistory = {{ weight_history | tojson }};
+        const dailyLog = {{ daily_log | tojson }};
+        const mealPlans = {{ meal_plans | tojson }};
+        const userGoals = {{ user_goals | tojson }}; // Assuming this is where the goals are passed from Flask
+
+        console.log('Weight History Data:', weightHistory);
+        console.log('Daily Log Data:', dailyLog);
+        console.log('User Goals:', userGoals);
+
+        // Initialize weight progress chart if data exists
+        if (weightHistory.length > 0) {
+            const weightDates = weightHistory.map(entry => entry.Date);
+            const weightValues = weightHistory.map(entry => entry.Weight);
+
+            const weightCtx = document.getElementById('weightChart').getContext('2d');
+            new Chart(weightCtx, {
+                type: 'line',
+                data: {
+                    labels: weightDates,  // Historic dates for weight progress
+                    datasets: [{
+                        label: 'Weight (kg)',
+                        data: weightValues,
+                        borderColor: 'blue',
+                        fill: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    animation: {
+                        duration: 2000, // Duration of the animation in milliseconds
+                        easing: 'easeInOutQuad', // Easing function for the animation
+                        animateScale: true,
+                        animateRotate: true,
+                        onProgress: function(animation) {
+                            console.log('Animation Progress:', animation.currentStep / animation.numSteps);
+                        },
+                        onComplete: function() {
+                            console.log('Animation Complete');
+                        }
+                    },
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Date'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Weight (kg)'
+                            }
+                        }
+                    }
+                }
+            });
+        } else {
+            console.log('No weight data available');
+        }
+
+        // Initialize daily nutrient log chart if data exists
+        if (dailyLog.length > 0) {
+            const dates = dailyLog.map(entry => entry.Date);
+            const calorieValues = dailyLog.map(entry => entry.Calories);
+            const proteinValues = dailyLog.map(entry => entry.Protein);
+            const carbValues = dailyLog.map(entry => entry.Carbohydrates);
+            const fatValues = dailyLog.map(entry => entry.Fats);
+
+            // Extract user goals
+            const calorieGoal = new Array(dates.length).fill(userGoals.calories_goal);
+            const proteinGoal = new Array(dates.length).fill(userGoals.protein_goal);
+            const carbGoal = new Array(dates.length).fill(userGoals.carbohydrates_goal);
+            const fatGoal = new Array(dates.length).fill(userGoals.fats_goal);
+
+            const nutrientCtx = document.getElementById('nutrientLogChart').getContext('2d');
+            new Chart(nutrientCtx, {
+                type: 'line',
+                data: {
+                    labels: dates,
+                    datasets: [
+                        {
+                            label: 'Calories',
+                            data: calorieValues,
+                            borderColor: 'blue',
+                            fill: false,
+                            pointRadius: 2
+                        },
+                        {
+                            label: `Calories Goal: ${userGoals.calories_goal} Calories (kcal)`,
+                            data: calorieGoal,
+                            borderColor: 'blue',
+                            borderDash: [5, 5],
+                            fill: false,
+                            pointRadius: 0
+                        },
+                        {
+                            label: 'Protein',
+                            data: proteinValues,
+                            borderColor: 'green',
+                            fill: false,
+                            pointRadius: 2
+                        },
+                        {
+                            label: `Protein Goal: ${userGoals.protein_goal} Protein (g)`,
+                            data: proteinGoal,
+                            borderColor: 'green',
+                            borderDash: [5, 5],
+                            fill: false,
+                            pointRadius: 0
+                        },
+                        {
+                            label: 'Carbohydrates',
+                            data: carbValues,
+                            borderColor: 'purple',
+                            fill: false,
+                            pointRadius: 2
+                        },
+                        {
+                            label: `Carbohydrates Goal: ${userGoals.carbohydrates_goal} Carbohydrates (g)`,
+                            data: carbGoal,
+                            borderColor: 'purple',
+                            borderDash: [5, 5],
+                            fill: false,
+                            pointRadius: 0
+                        },
+                        {
+                            label: 'Fats',
+                            data: fatValues,
+                            borderColor: 'red',
+                            fill: false,
+                            pointRadius: 2
+                        },
+                        {
+                            label: `Fats Goal: ${userGoals.fats_goal} Fats (g)`,
+                            data: fatGoal,
+                            borderColor: 'red',
+                            borderDash: [5, 5],
+                            fill: false,
+                            pointRadius: 0
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeInOutQuad'
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Date (dd-mm)'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Nutrient Amount'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initialize meal plan chart if data exists
+        if (mealPlans.length > 0) {
+            const mealPlan = mealPlans[0];  // Assume we are visualizing the first meal plan
+            const mealLabels = ['Protein', 'Carbohydrates', 'Fats'];
+            const mealData = [mealPlan.total_protein, mealPlan.total_carbs, mealPlan.total_fats];
+
+            const mealPlanCtx = document.getElementById('mealPlanChart').getContext('2d');
+            new Chart(mealPlanCtx, {
+                type: 'radar',
+                data: {
+                    labels: mealLabels,
+                    datasets: [{
+                        label: 'Latest Meal Plan Macros',
+                        data: mealData,
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    animation: {
+                        duration: 2000, // Duration of the animation in milliseconds
+                        easing: 'easeInOutSine' // Easing function for the animation
+                    },
+                    scales: {
+                        r: {
+                            angleLines: {
+                                display: false
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 200
+                        }
+                    }
+                }
+            });
+        }
+    });
+</script>
+
+{% endblock %}

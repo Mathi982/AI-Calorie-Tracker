@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Welcome to AI Calorie Tracker{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <!-- Welcome section -->
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h1 class="display-4">Welcome to the AI Calorie Tracker</h1>
+            <p class="lead">Track your food, manage your weight, and achieve your fitness goals.</p>
+        </div>
+    </div>
+
+    <!-- Navigation buttons -->
+    <div class="row mt-5 text-center">
+        <div class="col-md-3">
+            <a href="/dashboard" class="btn-menu">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a href="/food" class="btn-menu">
+                <i class="fas fa-apple-alt"></i> Food
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a href="/weight" class="btn-menu">
+                <i class="fas fa-weight"></i> Weight
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a href="/goals" class="btn-menu">
+                <i class="fas fa-clipboard-check"></i> Goals
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

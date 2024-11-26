@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block title %}BMI Calculator{% endblock %}
+
+{% block content %}
+    <h2 class="menu-title">BMI Calculator</h2>
+
+    <div class="row">
+        <!-- Left side: Current BMI Info if exists -->
+        {% if current_bmi_info %}
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">Current BMI Information</div>
+                <div class="card-body">
+                    <p><strong>Height:</strong> {{ current_bmi_info['Height'] }} cm</p>
+                    <p><strong>Weight:</strong> {{ current_bmi_info['Weight'] }} kg</p>
+                    <p><strong>Age:</strong> {{ current_bmi_info['Age'] }}</p>
+                    <p><strong>Gender:</strong> {{ current_bmi_info['Gender'] }}</p>
+                    <p><strong>BMI:</strong> {{ current_bmi_info['BMI'] | round(2) }}</p>
+                    <p><strong>BMR:</strong> {{ current_bmi_info['BMR'] | round(2) }} kcal/day</p>
+                    <p><strong>TDEE:</strong> {{ current_bmi_info['TDEE'] | round(2) }} kcal/day</p>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Right side: BMI Calculation Form -->
+        <div class="{% if current_bmi_info %}col-md-8{% else %}col-md-12{% endif %}">
+            <form method="POST" action="/bmi_calculator">
+                <div class="form-group">
+                    <label for="height">Enter your height (cm):</label>
+                    <input type="number" id="height" name="height" class="form-control" placeholder="e.g., 170" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="weight">Enter your weight (kg):</label>
+                    <!-- Updated input type to allow decimals -->
+                    <input type="number" id="weight" name="weight" class="form-control" placeholder="e.g., 78.5" step="0.1" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="age">Enter your age:</label>
+                    <input type="number" id="age" name="age" class="form-control" placeholder="e.g., 25" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="gender">Enter your gender (M/F):</label>
+                    <input type="text" id="gender" name="gender" class="form-control" placeholder="e.g., M" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="activity_level">Select your activity level (hours of exercise per week):</label>
+                    <select id="activity_level" name="activity_level" class="form-control">
+                        <option value="1">Sedentary (0-1 hours per week)</option>
+                        <option value="2">Lightly active (1-3 hours per week)</option>
+                        <option value="3">Moderately active (3-5 hours per week)</option>
+                        <option value="4">Very active (6-7 hours per week)</option>
+                        <option value="5">Super active (8+ hours per week)</option>
+                    </select>
+                </div>
+
+                <!-- Added a margin to the form for better spacing -->
+                <div style="margin-bottom: 20px;">
+                    <button type="submit" class="btn btn-primary">Calculate BMI</button>
+                    <button class="btn btn-secondary" onclick="location.href='/weight_menu'">
+                        <i class="fas fa-arrow-left"></i> Go Back
+                    </button>
+                </div>
+            </form>
+
+            <!-- Display the results -->
+            {% if success %}
+            <div class="alert alert-success mt-4">
+                <strong>Success!</strong> Your BMI is {{ bmi | round(2) }}, your BMR is {{ bmr | round(2) }} calories/day, and your TDEE is {{ tdee | round(2) }} calories/day.
+            </div>
+            {% endif %}
+
+            <!-- Display error messages -->
+            {% if error %}
+            <div class="alert alert-danger mt-4">
+                <strong>Error!</strong> {{ error }}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+
+<style>
+    .card-header {
+        background-color: rgba(1, 19, 71, 255);
+        color: white;
+        font-weight: bold;
+        text-align: center;  /* Optional: center the text */
+    }
+</style>
+
+
+{% endblock %}

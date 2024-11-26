@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% block title %}View Current Meal Plans{% endblock %}
+
+{% block content %}
+<h2 class="menu-title">Current Meal Plans</h2>
+
+<!-- Ensure the table takes up the full width and is scrollable -->
+<div class="container-fluid">
+    <div class="row clearfix">
+        <!-- Table Section -->
+        <div class="table-section">
+            <div class="table-wrapper" style="max-height: 700px; overflow-y: auto;">
+                <table class="table table-striped table-hover">
+                    <thead style="position: sticky; top: 0; background-color: #f0f0f0; z-index: 1;">
+                        <tr>
+                            <th>Meal Plan</th>
+                            <th>Total Calories</th>
+                            <th>Total Protein (g)</th>
+                            <th>Total Carbs (g)</th>
+                            <th>Total Fats (g)</th>
+                            <th>Total Price (£)</th>
+                            <th>Meals</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Loop through meal plans -->
+                        {% for plan in meal_plans %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ plan.total_calories }}</td>
+                            <td>{{ plan.total_protein }}</td>
+                            <td>{{ plan.total_carbs }}</td>
+                            <td>{{ plan.total_fats }}</td>
+                            <td>{{ plan.total_price }}</td>
+                            <td>
+                                <ul>
+                                    {% for meal in plan.meals %}
+                                    <li>{{ meal.name }}: {{ meal.calories }} cal, {{ meal.protein }}g protein, {{ meal.carbohydrates }}g carbs, {{ meal.fats }}g fats, £{{ meal.price }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Style the table to be simple and clean */
+    .table {
+        width: 100%; /* Full width */
+        border-collapse: collapse; /* Collapse borders */
+        white-space: nowrap; /* Prevent long text from breaking */
+    }
+
+    /* Table headers */
+    th {
+        background-color: #f0f0f0; /* Light grey background for the header */
+        color: rgba(1, 19, 71, 255); /* Text color as rgba(1,19,71,255) */
+        padding: 10px; /* Add some padding */
+        text-align: left; /* Align text to the left */
+        font-weight: bold; /* Make text bold */
+    }
+
+    /* Table cells */
+    td {
+        padding: 10px; /* Add padding */
+        border-bottom: 1px solid #ddd; /* Light grey border between rows */
+    }
+
+    /* Hover effect on table rows */
+    tr:hover {
+        background-color: #f5f5f5; /* Light grey background on hover */
+    }
+
+    /* Scrollable table section */
+    .table-section {
+        max-height: 700px; /* Set the height to 700px */
+        overflow-y: auto; /* Add vertical scroll */
+        overflow-x: hidden; /* Prevent horizontal scroll */
+        margin-bottom: 20px; /* Space below the table */
+    }
+
+    /* Ensure table headers remain sticky */
+    thead {
+        position: sticky;
+        top: 0;
+        background-color: #f0f0f0;
+        z-index: 1; /* Ensure headers stay above other content */
+    }
+
+</style>
+
+{% endblock %}

@@ -1,0 +1,318 @@
+{% extends 'base.html' %}
+
+{% block title %}Your Current Fitness Goals{% endblock %}
+
+{% block content %}
+<h1> Your Current Goals </h1>
+<div class="ag-format-container">
+    <div class="ag-courses_box">
+        <div class="ag-courses_item">
+            <div class="ag-courses-item_link">
+                <div class="ag-courses-item_bg"></div>
+                <div class="ag-courses-item_title">
+                    Calories Goal
+                </div>
+                <div class="ag-courses-item_value">
+                    {{ current_goals.calories_goal | round(2) }} kcal
+                </div>
+            </div>
+        </div>
+
+        <div class="ag-courses_item">
+            <div class="ag-courses-item_link">
+                <div class="ag-courses-item_bg"></div>
+                <div class="ag-courses-item_title">
+                    Protein Goal
+                </div>
+                <div class="ag-courses-item_value">
+                    {{ current_goals.protein_goal | round(2) }} g
+                </div>
+            </div>
+        </div>
+
+        <div class="ag-courses_item">
+            <div class="ag-courses-item_link">
+                <div class="ag-courses-item_bg"></div>
+                <div class="ag-courses-item_title">
+                    Carbohydrates Goal
+                </div>
+                <div class="ag-courses-item_value">
+                    {{ current_goals.carbohydrates_goal | round(2) }} g
+                </div>
+            </div>
+        </div>
+
+        <div class="ag-courses_item">
+            <div class="ag-courses-item_link">
+                <div class="ag-courses-item_bg"></div>
+                <div class="ag-courses-item_title">
+                    Fats Goal
+                </div>
+                <div class="ag-courses-item_value">
+                    {{ current_goals.fats_goal | round(2) }} g
+                </div>
+            </div>
+        </div>
+
+        <div class="ag-courses_item">
+            <div class="ag-courses-item_link">
+                <div class="ag-courses-item_bg"></div>
+                <div class="ag-courses-item_title">
+                    Target Weight
+                </div>
+                <div class="ag-courses-item_value">
+                    {{ current_goals.target_weight | round(2) }} kg
+                </div>
+            </div>
+        </div>
+
+        <div class="ag-courses_item">
+            <div class="ag-courses-item_link">
+                <div class="ag-courses-item_bg"></div>
+                <div class="ag-courses-item_title">
+                    Starting Weight
+                </div>
+                <div class="ag-courses-item_value">
+                    {{ current_goals.starting_weight | round(2) }} kg
+                </div>
+            </div>
+        </div>
+
+        <div class="ag-courses_item">
+            <div class="ag-courses-item_link">
+                <div class="ag-courses-item_bg"></div>
+                <div class="ag-courses-item_title">
+                    Weekly Weight Change
+                </div>
+                <div class="ag-courses-item_value">
+                    {{ current_goals.weekly_weight_change | round(2) }} kg
+                </div>
+            </div>
+        </div>
+
+        <div class="ag-courses_item">
+            <div class="ag-courses-item_link">
+                <div class="ag-courses-item_bg"></div>
+                <div class="ag-courses-item_title">
+                    Target Date
+                </div>
+                <div class="ag-courses-item_value">
+                    {{ current_goals.target_date }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Weekly Progression Table -->
+    <h2>Weekly Target Weights</h2>
+    <div class="scrollable-table">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Target Weight (kg)</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for week in weekly_progression %}
+                <tr>
+                    <td>{{ week[0] }}</td>
+                    <td>{{ week[1] | round(2) }} kg</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Visualization Button -->
+    <button id="visualize-progress" class="btn btn-primary mt-3">Visualize Your Progress</button>
+
+    <!-- Graph Container -->
+    <div class="col-md-12" id="graph-container" style="display: none;">
+        <div id="chartContainer"></div>
+    </div>
+
+    <!-- Set new goals button -->
+    <div class="set-goal-btn">
+        <button class="btn btn-primary" onclick="location.href='/set_goals'">Set New Goals</button>
+    </div>
+</div>
+
+<!-- Custom Styles -->
+<style>
+.ag-format-container {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.ag-courses_box {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.ag-courses_item {
+    flex-basis: calc(50% - 30px); /* Two items per row, adjust for gaps */
+    margin: 10px;
+    border-radius: 15px;
+    overflow: hidden;
+    background-color: rgba(1, 19, 71, 255); /* Dark blue card */
+    transition: background-color 0.3s ease;
+    position: relative;
+    height: 150px; /* Ensures square-ish look */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ag-courses-item_link {
+    padding: 20px;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.ag-courses-item_bg {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-color: #800080;
+    top: -35px;
+    right: -25px;
+    border-radius: 50%;
+    z-index: 0; /* Ensure the bg is behind the text */
+    transition: transform 0.3s ease;
+}
+
+.ag-courses_item:hover .ag-courses-item_bg {
+    transform: scale(20); /* Hover scaling effect */
+}
+
+.ag-courses_item:hover {
+    background-color: rgba(1, 19, 71, 200); /* Lighter shade on hover */
+}
+
+.ag-courses-item_title {
+    font-size: 20px;
+    font-weight: bold;
+    z-index: 1; /* Ensure text stays above background */
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.ag-courses-item_value {
+    font-size: 18px;
+    z-index: 1; /* Ensure text stays above background */
+    position: relative;
+}
+
+.set-goal-btn {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.set-goal-btn .btn {
+    padding: 10px 20px;
+    background-color: rgba(1, 19, 71, 255);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.set-goal-btn .btn:hover {
+    background-color: rgba(1, 19, 71, 200); /* Lighter shade on hover */
+}
+
+/* Weekly Progression Table */
+.scrollable-table {
+    max-height: 300px; /* Set a fixed height */
+    overflow-y: auto; /* Allow vertical scrolling */
+    margin-top: 20px;
+}
+
+.table {
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+}
+
+.table th, .table td {
+    padding: 15px;
+    border: 1px solid #ddd;
+}
+
+/* Make sure the layout is responsive */
+@media (max-width: 768px) {
+    .ag-courses_item {
+        flex-basis: calc(100% - 20px); /* One item per row on small screens */
+    }
+}
+</style>
+
+<!-- CanvasJS for Graph -->
+<script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
+
+<script>
+    document.getElementById('visualize-progress').addEventListener('click', function() {
+        // Show the graph container
+        document.getElementById('graph-container').style.display = 'block';
+
+        // Get the data from Flask backend
+        const data = {{ weekly_progression | tojson | default([]) }};  // Ensure it's an empty list if undefined
+
+        // If data is empty, skip rendering
+        if (data.length === 0) {
+            console.error('No data available for visualization');
+            return;
+        }
+
+        // Prepare the data for CanvasJS
+        const dataPoints = data.map(week => {
+            const [day, month, year] = week[0].split('-'); // Split the date string by dashes
+            const date = new Date(`${year}-${month}-${day}`); // Reformat to yyyy-mm-dd
+            return {
+                x: date,
+                y: week[1]
+            };
+        });
+
+        // Create the CanvasJS chart
+        var chart = new CanvasJS.Chart("chartContainer", {
+            animationEnabled: true,  // Enable animation
+            theme: "light2", // Light theme
+            title:{
+                text: "Projected Weight Progression"
+            },
+            axisX: {
+                valueFormatString: "DD MMM, YY", // Date format
+                title: "Date",
+            },
+            axisY: {
+                title: "Weight (kg)",
+                suffix: " kg",
+                includeZero: false  // Don't include zero in the Y axis if unnecessary
+            },
+            data: [{
+                type: "spline",  // Smooth line graph
+                markerSize: 5,
+                xValueFormatString: "DD MMM, YY",
+                yValueFormatString: "#,##0.0 kg",
+                lineColor: "green",    // Line color changed to green
+                markerColor: "green",  // Marker color changed to green
+                dataPoints: dataPoints
+            }]
+        });
+
+        chart.render();
+    });
+</script>
+
+{% endblock %}

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}AI Calorie Tracker{% endblock %}</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Main background: white for content */
+        body {
+            background: white;
+            min-height: 100vh;
+            color: #0c1445; /* Navy blue text */
+        }
+
+        /* Styling for the sidebar */
+        .sidebar {
+            height: 100vh;
+            background: linear-gradient(45deg, rgba(1,19,71,255), rgba(17,23,56,255)); /* Gradient background */
+            padding-top: 20px;
+            width: 200px;
+            position: fixed;
+            left: 0;
+        }
+
+        /* Sidebar header */
+        .sidebar-header {
+            text-align: center;
+            padding: 20px 0;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .sidebar-header i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        /* Sidebar buttons placed directly below the header */
+        .sidebar a {
+            color: white; /* White text for sidebar items */
+            font-size: 1.2rem;
+            padding: 15px 20px;
+            text-align: left;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .sidebar a i {
+            margin-right: 10px; /* Space between icon and text */
+            font-size: 1.5rem;
+        }
+
+        .sidebar a.active, .sidebar a:hover {
+            background-color: rgba(17, 23, 56, 255); /* Darker shade for active or hovered items */
+            color: white;
+        }
+
+        /* Main content area */
+        .main-content {
+            padding: 50px;
+            margin-left: 220px; /* Offset for the sidebar */
+            background-color: white; /* Main content stays white */
+        }
+
+        /* Buttons with gradient background */
+        .btn-menu {
+            width: 90%; /* Adjusted width for the left alignment */
+            padding: 30px; /* Larger padding for square shape */
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(45deg, rgba(1,19,71,255), rgba(17,23,56,255)); /* Gradient background for buttons */
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn-menu i {
+            margin-right: 10px;
+        }
+
+        /* Hover effect for buttons */
+        .btn-menu:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Back button placed at the bottom */
+        .btn-back {
+            width: 90%;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-2 sidebar">
+                <!-- Sidebar Header -->
+                <div class="sidebar-header">
+                    <i class="fas fa-leaf"></i>
+                    <span>AI Calorie Tracker</span>
+                </div>
+
+                <!-- Sidebar Items (Buttons) -->
+                <div class="sidebar-items">
+                    <a href="/" class="{% if request.path == '/' %}active{% endif %}">
+                        <i class="fas fa-tachometer-alt"></i> Main Page
+                    </a>
+                    <a href="/food" class="{% if request.path == '/food' %}active{% endif %}">
+                        <i class="fas fa-apple-alt"></i> Food
+                    </a>
+                    <a href="/weight" class="{% if request.path == '/weight' %}active{% endif %}">
+                        <i class="fas fa-weight"></i> Weight
+                    </a>
+                    <a href="/goals" class="{% if request.path == '/goals' %}active{% endif %}">
+                        <i class="fas fa-clipboard-check"></i> Goals
+                    </a>
+                </div>
+            </div>
+
+            <!-- Main content -->
+            <div class="col-md-10">
+                <div class="main-content">
+                    <div class="left-section">
+                        {% block content %}
+                        <!-- Buttons for each specific page will go here -->
+                        {% endblock %}
+                    </div>
+
+                    <div class="right-section">
+                        {% block table_content %}
+                        {% endblock %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Chart.js for Graphs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- JavaScript to handle content change and graph initialization -->
+    <script>
+        var ctx = document.getElementById('exampleChart').getContext('2d');
+        var exampleChart = new Chart(ctx, {
+            type: 'bar', // Example chart type
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May'],
+                datasets: [{
+                    label: 'Example Data',
+                    data: [12, 19, 3, 5, 2],
+                    backgroundColor: '#0c1445'
+                }]
+            },
+            options: {
+                responsive: true
+            }
+        });
+    </script>
+</body>
+</html>

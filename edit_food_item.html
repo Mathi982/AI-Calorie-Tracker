@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Food Item{% endblock %}
+
+{% block content %}
+    <h2>Edit Food Item: {{ food_item.name }}</h2>
+
+    <!-- Form for editing the food item -->
+   <form method="POST" action="/edit_food_item">
+    <!-- Hidden field to store the original name -->
+    <input type="hidden" name="original_name" value="{{ food_item['Name'] }}">
+
+    <label for="name">Food Name:</label>
+    <input type="text" id="name" name="name" class="form-control" value="{{ food_item['Name'] }}">
+
+    <label for="calories">Calories (leave blank to keep current value: kcal):</label>
+    <input type="text" id="calories" name="calories" class="form-control" value="{{ food_item['Calories'] }}">
+
+    <label for="protein">Protein (g) (leave blank to keep current value: g):</label>
+    <input type="text" id="protein" name="protein" class="form-control" value="{{ food_item['Protein'] }}">
+
+    <label for="carbohydrates">Carbohydrates (g) (leave blank to keep current value: g):</label>
+    <input type="text" id="carbohydrates" name="carbohydrates" class="form-control" value="{{ food_item['Carbohydrates'] }}">
+
+    <label for="fats">Fats (g) (leave blank to keep current value: g):</label>
+    <input type="text" id="fats" name="fats" class="form-control" value="{{ food_item['Fats'] }}">
+
+    <button type="submit" class="btn btn-success">Save Changes</button>
+    <a href="{{ url_for('show_items') }}" class="btn btn-secondary">Go Back</a>
+</form>
+
+
+{% endblock %}

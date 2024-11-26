@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% block title %}Generate Meal Plan{% endblock %}
+
+{% block content %}
+<h2 class="menu-title">Generate New Meal Plan</h2>
+
+{% if existing_meal_plans %}
+    <!-- Warning for existing meal plans and overwrite option -->
+    <div class="alert alert-warning">
+        <strong>Warning!</strong> Existing meal plans are found. Generating new meal plans will overwrite the current ones.
+        <form method="POST" action="/generate_meal_plan">
+            <input type="hidden" name="overwrite" value="true">
+            <button type="submit" class="btn btn-danger mt-2">Overwrite and Generate New Meal Plans</button>
+        </form>
+    </div>
+{% else %}
+    <!-- Form for meal plan criteria -->
+    <form method="POST" action="/generate_meal_plan">
+        <!-- Row for calories input -->
+        <div class="row mb-3">
+            <div class="col">
+                <label for="calories_lower">Calories (Min)</label>
+                <input type="number" name="calories_lower" class="form-control" placeholder="e.g. 1200" min="0">
+            </div>
+            <div class="col">
+                <label for="calories_upper">Calories (Max)</label>
+                <input type="number" name="calories_upper" class="form-control" placeholder="e.g. 2000" min="0">
+            </div>
+        </div>
+
+        <!-- Row for protein input -->
+        <div class="row mb-3">
+            <div class="col">
+                <label for="protein_lower">Protein (Min)</label>
+                <input type="number" name="protein_lower" class="form-control" placeholder="e.g. 160" min="0">
+            </div>
+            <div class="col">
+                <label for="protein_upper">Protein (Max)</label>
+                <input type="number" name="protein_upper" class="form-control" placeholder="Optional" min="0">
+            </div>
+        </div>
+
+        <!-- Row for carbohydrates input -->
+        <div class="row mb-3">
+            <div class="col">
+                <label for="carbs_lower">Carbs (Min)</label>
+                <input type="number" name="carbs_lower" class="form-control" placeholder="Optional" min="0">
+            </div>
+            <div class="col">
+                <label for="carbs_upper">Carbs (Max)</label>
+                <input type="number" name="carbs_upper" class="form-control" placeholder="Optional" min="0">
+            </div>
+        </div>
+
+        <!-- Row for fats input -->
+        <div class="row mb-3">
+            <div class="col">
+                <label for="fats_lower">Fats (Min)</label>
+                <input type="number" name="fats_lower" class="form-control" placeholder="Optional" min="0">
+            </div>
+            <div class="col">
+                <label for="fats_upper">Fats (Max)</label>
+                <input type="number" name="fats_upper" class="form-control" placeholder="Optional" min="0">
+            </div>
+        </div>
+
+        <!-- Row for price input -->
+        <div class="row mb-3">
+            <div class="col">
+                <label for="price_lower">Price (Min)</label>
+                <input type="number" name="price_lower" class="form-control" placeholder="Optional" min="0">
+            </div>
+            <div class="col">
+                <label for="price_upper">Price (Max)</label>
+                <input type="number" name="price_upper" class="form-control" placeholder="Optional" min="0">
+            </div>
+        </div>
+
+        <!-- Row for number of meal plans -->
+        <div class="row mb-3">
+            <div class="col">
+                <label for="num_meal_plans">Number of Meal Plans</label>
+                <input type="number" name="num_meal_plans" class="form-control" value="1" min="1">
+            </div>
+        </div>
+
+        <!-- Submit button -->
+        <button type="submit" class="btn btn-primary mt-3">Generate Meal Plans</button>
+    </form>
+{% endif %}
+
+<hr>
+
+<!-- Show success message and view meal plans button if meal plans were generated -->
+{% if meal_plans_generated %}
+    <div class="alert alert-success mt-4">
+        <strong>Success!</strong> Meal Plans generated.
+    </div>
+    <a href="/view_meal_plans" class="btn btn-primary mt-2">View Meal Plans</a>
+{% endif %}
+
+<!-- Back Button -->
+<button class="btn btn-secondary mt-3" onclick="location.href='/meal_planning'">Go Back</button>
+
+{% endblock %}

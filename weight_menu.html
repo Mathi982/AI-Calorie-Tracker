@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Weight Management{% endblock %}
+
+{% block content %}
+    <h2 class="menu-title">Weight Management</h2>
+
+    <!-- Log Weight Button -->
+    <button class="btn btn-menu" onclick="location.href='/log_weight'">
+        <i class="fas fa-weight"></i> Log Weight
+    </button>
+
+    <!-- Visualize Weight Progress (with Prediction) Button -->
+    <button class="btn btn-menu" onclick="location.href='/visualise_weight_progress'">
+        <i class="fas fa-chart-line"></i> Visualise Your Progress
+    </button>
+
+<!-- Calculate BMI Button -->
+    <button class="btn btn-menu" onclick="location.href='/bmi_calculator'">
+        <i class="fas fa-calculator"></i> Calculate BMI
+    </button>
+
+    <!-- Clear Weight History Button -->
+    <button class="btn btn-menu" onclick="location.href='/clear_weight_history'">
+        <i class="fas fa-trash-alt"></i> Clear Weight History
+    </button>
+
+
+
+{% endblock %}

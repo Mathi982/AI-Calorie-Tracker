@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Enter Macros{% endblock %}
+
+{% block content %}
+<h2 class="menu-title">Enter Nutritional Information for {{ name }}</h2>
+
+<form method="POST" action="/enter_macros">
+    <input type="hidden" name="name" value="{{ name }}">
+    <input type="hidden" name="category" value="{{ category }}">
+
+    <label for="calories_per_100g">Calories per 100g:</label>
+    <input type="number" id="calories_per_100g" name="calories_per_100g" class="form-control" required>
+
+    <label for="protein_per_100g">Protein per 100g:</label>
+    <input type="number" id="protein_per_100g" name="protein_per_100g" class="form-control" required>
+
+    <label for="carbs_per_100g">Carbs per 100g:</label>
+    <input type="number" id="carbs_per_100g" name="carbs_per_100g" class="form-control" required>
+
+    <label for="fats_per_100g">Fats per 100g:</label>
+    <input type="number" id="fats_per_100g" name="fats_per_100g" class="form-control" required>
+
+    <button type="submit" class="btn btn-primary mt-3">Submit Macros</button>
+</form>
+
+<button class="btn btn-menu btn-back" onclick="location.href='/food'">Go Back</button>
+{% endblock %}

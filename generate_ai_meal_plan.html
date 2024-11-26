@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block title %}Generate AI-Powered Weekly Meal Plan{% endblock %}
+
+{% block content %}
+<h2>Generate AI-Powered Weekly Meal Plan</h2>
+
+{% if meal_plans_generated %}
+    <!-- Success message and view button -->
+    <div class="alert alert-success">
+        <strong>Success!</strong> AI-powered meal plan has been generated.
+    </div>
+    <a href="{{ url_for('view_ai_meal_plan') }}" class="btn btn-primary">View AI Meal Plans</a>
+    <a href="{{ url_for('meal_planning') }}" class="btn btn-secondary">Go Back</a>
+
+{% elif custom_goal_form %}
+    <!-- Custom macros input form -->
+    <form method="POST" action="/generate_ai_meal_plan">
+        <div class="form-group">
+            <label for="calories_goal">Calories</label>
+            <input type="number" name="calories_goal" class="form-control" value="2000">
+        </div>
+        <div class="form-group">
+            <label for="protein_goal">Protein (g)</label>
+            <input type="number" name="protein_goal" class="form-control" value="100">
+        </div>
+        <div class="form-group">
+            <label for="carbohydrates_goal">Carbs (g)</label>
+            <input type="number" name="carbohydrates_goal" class="form-control" value="250">
+        </div>
+        <div class="form-group">
+            <label for="fats_goal">Fats (g)</label>
+            <input type="number" name="fats_goal" class="form-control" value="50">
+        </div>
+        <button type="submit" class="btn btn-primary" name="custom_goals" value="submit">Generate Meal Plan</button>
+    </form>
+
+{% elif existing_ai_meal_plans %}
+    <!-- Overwrite warning if AI meal plan exists -->
+    <div class="alert alert-warning">
+        <strong>Warning!</strong> An existing AI meal plan is found. Generating a new one will overwrite the current one.
+        <form method="POST" action="/generate_ai_meal_plan">
+            <input type="hidden" name="overwrite" value="true">
+            <button type="submit" class="btn btn-danger mt-2">Overwrite and Generate New AI Meal Plans</button>
+        </form>
+    </div>
+
+{% else %}
+    <!-- Display the current goals and ask the user whether to use them -->
+    {% if goals %}
+    <p>Your current goals are:</p>
+    <ul>
+        <li>Calories: {{ goals.calories_goal }} kcal</li>
+        <li>Protein: {{ goals.protein_goal }}g</li>
+        <li>Carbs: {{ goals.carbohydrates_goal }}g</li>
+        <li>Fats: {{ goals.fats_goal }}g</li>
+    </ul>
+    {% endif %}
+    <p>Do you want to use these goals for the AI meal plan?</p>
+    <form method="POST" action="/generate_ai_meal_plan">
+        <button type="submit" name="use_goals" value="yes" class="btn btn-success">Yes, Use My Goals</button>
+        <button type="submit" name="use_goals" value="no" class="btn btn-warning">No, I'll Input New Goals</button>
+    </form>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Predict Future Weight{% endblock %}
+
+{% block content %}
+    <h2>Predict Your Future Weight</h2>
+
+    <form method="POST" action="/predict_weight">
+        <div class="form-group">
+            <label for="days">Enter the number of days to predict into the future:</label>
+            <input type="number" id="days" name="days" class="form-control" placeholder="e.g., 7" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Predict Weight</button>
+    </form>
+
+    <!-- Display predictions if they are calculated -->
+    {% if predictions %}
+    <h3>Predicted Weight for the next {{ days }} days:</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Predicted Weight (kg)</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for date, weight in predictions %}
+            <tr>
+                <td>{{ date }}</td>
+                <td>{{ weight }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+
+    <button class="btn btn-secondary" onclick="location.href='/weight_menu'">
+        <i class="fas fa-arrow-left"></i> Go Back
+    </button>
+
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Food Log{% endblock %}
+
+{% block content %}
+    <h2 class="menu-title">Food Log</h2>
+    <button class="btn btn-menu" onclick="location.href='/calculate_daily_intake'">
+        Calculate Daily Intake
+    </button>
+    <button class="btn btn-menu" onclick="location.href='/view_log'">
+        View Food Log
+    </button>
+
+    <!-- Clear Food Log Button with a form -->
+    <form action="/clear_log" method="GET" style="display: inline;">
+        <button type="submit" class="btn btn-menu">Clear Food Log</button>
+    </form>
+
+    <button class="btn btn-menu btn-back" onclick="location.href='/food'">
+        <i class="fas fa-arrow-left"></i> Go Back
+    </button>
+{% endblock %}

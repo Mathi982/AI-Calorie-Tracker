@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+
+{% block title %}View Food Log{% endblock %}
+
+{% block content %}
+    <h2>View Food Log</h2>
+
+    <!-- Scrollable table container -->
+    <div style="max-height: 400px; overflow-y: auto;">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Calories</th>
+                    <th>Protein (g)</th>
+                    <th>Carbohydrates (g)</th>
+                    <th>Fats (g)</th>
+                    <th>View Macros</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in daily_log %}
+                <tr>
+                    <td>{{ entry['Date'] }}</td>
+                    <td>{{ entry['Calories'] }} kcal</td>
+                    <td>{{ entry['Protein'] }} g</td>
+                    <td>{{ entry['Carbohydrates'] }} g</td>
+                    <td>{{ entry['Fats'] }} g</td>
+                    <td>
+                        <form action="{{ url_for('select_log_entry') }}" method="POST">
+                            <input type="hidden" name="log_id" value="{{ entry['Date'] }}">
+                            <button type="submit" class="btn btn-primary btn-sm">Select</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <button class="btn btn-secondary" onclick="location.href='/food_log'">
+        <i class="fas fa-arrow-left"></i> Go Back
+    </button>
+
+    <!-- Visualization for the selected log -->
+    {% if selected_log %}
+        <h3>Your Selected Log:</h3>
+        <ul>
+            <li>Date: {{ selected_log['Date'] }}</li>
+            <li>Total Calories: {{ selected_log['Calories'] }} kcal</li>
+            <li>Total Protein: {{ selected_log['Protein'] }} g</li>
+            <li>Total Carbohydrates: {{ selected_log['Carbohydrates'] }} g</li>
+            <li>Total Fats: {{ selected_log['Fats'] }} g</li>
+        </ul>
+
+        <!-- Radial charts to show progress -->
+        <div id="visualization" style="display: flex; justify-content: space-around; margin: 20px 0;">
+            <div>
+                <canvas id="caloriesChart" width="120" height="120"></canvas>
+                <p>Total Calories</p>
+            </div>
+            <div>
+                <canvas id="proteinChart" width="120" height="120"></canvas>
+                <p>Total Protein</p>
+            </div>
+            <div>
+                <canvas id="carbsChart" width="120" height="120"></canvas>
+                <p>Total Carbs</p>
+            </div>
+            <div>
+                <canvas id="fatsChart" width="120" height="120"></canvas>
+                <p>Total Fats</p>
+            </div>
+        </div>
+
+        <script>
+    // Define the goal values globally so they can be accessed by both the charts and update functions
+    const goalCalories = {{ goal_calories|default(2000) | int }};
+    const goalProtein = {{ goal_protein|default(150) | int }};
+    const goalCarbs = {{ goal_carbs|default(300) | int }};
+    const goalFats = {{ goal_fats|default(70) | int }};
+
+    let caloriesChart, proteinChart, carbsChart, fatsChart;
+
+    // Initialize the radial charts once the DOM is fully loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        // Call the initializeCharts function after the DOM content is loaded
+        initializeCharts();
+    });
+
+    // Function to initialize the radial charts
+    function initializeCharts() {
+        const caloriesCanvas = document.getElementById('caloriesChart');
+        const proteinCanvas = document.getElementById('proteinChart');
+        const carbsCanvas = document.getElementById('carbsChart');
+        const fatsCanvas = document.getElementById('fatsChart');
+
+        // Check if each canvas exists before initializing a chart for it
+        if (caloriesCanvas) {
+            caloriesChart = createRadialChart(caloriesCanvas, {{ selected_log['Calories']|default(0) }}, goalCalories, '#4CAF50');
+        }
+
+        if (proteinCanvas) {
+            proteinChart = createRadialChart(proteinCanvas, {{ selected_log['Protein']|default(0) }}, goalProtein, '#FF5733');
+        }
+
+        if (carbsCanvas) {
+            carbsChart = createRadialChart(carbsCanvas, {{ selected_log['Carbohydrates']|default(0) }}, goalCarbs, '#3498DB');
+        }
+
+        if (fatsCanvas) {
+            fatsChart = createRadialChart(fatsCanvas, {{ selected_log['Fats']|default(0) }}, goalFats, '#F1C40F');
+        }
+    }
+
+    // Function to create a radial chart with a doughnut style
+    function createRadialChart(canvas, initialValue, maxValue, color) {
+        return new Chart(canvas.getContext('2d'), {
+            type: 'doughnut',
+            data: {
+                datasets: [{
+                    data: [initialValue, maxValue - initialValue],  // Initial value and remaining value to goal
+                    backgroundColor: [color, '#E0E0E0'],  // Use color for actual value and light gray for remaining
+                    borderWidth: 1,  // Border width around the chart
+                }]
+            },
+            options: {
+                circumference: 180,  // Half-circle
+                rotation: 270,  // Start at the top (12 o'clock position)
+                cutout: '70%',  // How much of the center is cut out (donut shape)
+                plugins: {
+                    tooltip: { enabled: false },  // Disable tooltip popups
+                    legend: { display: false }  // Hide the legend
+                }
+            }
+        });
+    }
+</script>
+
+    {% endif %}
+{% endblock %}
